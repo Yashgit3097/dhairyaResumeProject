@@ -84,6 +84,7 @@ const EditResume = () => {
       email: "",
       phone: "",
       location: "",
+      address: "",
       linkedin: "",
       github: "",
       website: "",
@@ -510,7 +511,14 @@ const EditResume = () => {
           title: resumeInfo?.title || "Untitled",
           template: resumeInfo?.template || prevState?.template,
           profileInfo: resumeInfo?.profileInfo || prevState?.profileInfo,
-          contactInfo: resumeInfo?.contactInfo || prevState?.contactInfo,
+          contactInfo: resumeInfo?.contactInfo
+            ? {
+                ...prevState.contactInfo,
+                ...resumeInfo.contactInfo,
+                location: resumeInfo.contactInfo.location || resumeInfo.contactInfo.address || "",
+                address: resumeInfo.contactInfo.address || resumeInfo.contactInfo.location || "",
+              }
+            : prevState?.contactInfo,
           workExperience: resumeInfo?.workExperience || prevState?.workExperience,
           education: resumeInfo?.education || prevState?.education,
           skills: resumeInfo?.skills || prevState?.skills,

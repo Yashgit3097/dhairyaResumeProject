@@ -80,10 +80,10 @@ const TemplateFour = ({ resumeData = {}, containerWidth }) => {
                 <span>{contactInfo.phone}</span>
               </a>
             )}
-            {contactInfo.location && (
+            {(contactInfo.location || contactInfo.address) && (
               <span className="flex items-center gap-1.5">
                 <LuMapPin className="text-sky-400 text-sm" />
-                <span>{contactInfo.location}</span>
+                <span>{contactInfo.location || contactInfo.address}</span>
               </span>
             )}
           </div>

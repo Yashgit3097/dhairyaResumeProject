@@ -22,6 +22,8 @@ const resumeSchema = new mongoose.Schema(
     },
     profileInfo: {
       profilePreviewUrl: String,
+      profileImg: String,
+      previewUrl: String,
       fullName: String,
       designation: String,
       summary: String,
@@ -30,6 +32,7 @@ const resumeSchema = new mongoose.Schema(
       email: String,
       phone: String,
       address: String,
+      location: String,
       website: String,
       linkedin: String,
       github: String,
@@ -38,25 +41,30 @@ const resumeSchema = new mongoose.Schema(
     // work Experience
     workExperience: [
       {
+        company: String,
         companyName: String,
+        role: String,
         jobTitle: String,
-        startDate: Date,
-        endDate: Date,
+        startDate: String,
+        endDate: String,
         description: String,
+        location: String,
       },
     ],
     education: [
       {
+        institution: String,
         institutionName: String,
         degree: String,
-        startDate: Date,
-        endDate: Date,
+        startDate: String,
+        endDate: String,
         description: String,
       },
     ],
 
     skills: [
       {
+        name: String,
         skillName: String,
         progress: Number, // Progress can be a percentage or a rating
       },
@@ -66,7 +74,9 @@ const resumeSchema = new mongoose.Schema(
       {
         title: String,
         description: String,
+        github: String,
         githubLink: String,
+        liveDemo: String,
         liveDemoLink: String,
       },
     ],
@@ -90,9 +100,20 @@ const resumeSchema = new mongoose.Schema(
   },
   {
     timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" }, // Automatically manage createdAt and updatedAt fields
+    strict: false,
   }
 );
 
+resumeSchema.pre("save", function (next) {
+  if (this.contactInfo) {
+    if (this.contactInfo.location && !this.contactInfo.address) {
+      this.contactInfo.address = this.contactInfo.location;
+    } else if (this.contactInfo.address && !this.contactInfo.location) {
+      this.contactInfo.location = this.contactInfo.address;
+    }
+  }
+  next();
+});
 
 export default mongoose.model("Resume", resumeSchema);
 

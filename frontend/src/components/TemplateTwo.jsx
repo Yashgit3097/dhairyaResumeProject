@@ -48,7 +48,8 @@ const TemplateTwo = ({ resumeData = {}, containerWidth }) => {
       <div className="text-center mb-2">
         <h1 className="text-2xl font-bold tracking-tight mb-2">{profileInfo.fullName}</h1>
         <p className="text-sm text-gray-600 font-medium mb-2">{profileInfo.designation}</p>
-        <div className="flex flex-wrap justify-center gap-1 text-[11px] text-gray-700">
+        <div className="flex flex-wrap justify-center gap-2 text-[11px] text-gray-700">
+          {(contactInfo.location || contactInfo.address) && <span>{contactInfo.location || contactInfo.address}</span>}
           {contactInfo.phone && <span>{contactInfo.phone}</span>}
           {contactInfo.email && (
             <a href={`mailto:${contactInfo.email}`} className="hover:underline text-blue-600">

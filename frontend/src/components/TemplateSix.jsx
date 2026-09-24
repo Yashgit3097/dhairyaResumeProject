@@ -81,9 +81,9 @@ const TemplateSix = ({ resumeData = {}, containerWidth }) => {
                   <LuPhone className="text-indigo-600" /> {contactInfo.phone}
                 </a>
               )}
-              {contactInfo.location && (
+              {(contactInfo.location || contactInfo.address) && (
                 <span className="flex items-center gap-1 text-slate-500">
-                  <LuMapPin className="text-indigo-600" /> {contactInfo.location}
+                  <LuMapPin className="text-indigo-600" /> {contactInfo.location || contactInfo.address}
                 </span>
               )}
             </div>

@@ -22,6 +22,7 @@ export const createResume = async (req, res) => {
                 email: '',
                 phone: '',
                 location: '',
+                address: '',
                 linkedin: '',
                 github: '',
                 website: '',
@@ -73,6 +74,14 @@ export const createResume = async (req, res) => {
             interests: [''],
         };
 
+
+        if (req.body.contactInfo) {
+            if (req.body.contactInfo.location && !req.body.contactInfo.address) {
+                req.body.contactInfo.address = req.body.contactInfo.location;
+            } else if (req.body.contactInfo.address && !req.body.contactInfo.location) {
+                req.body.contactInfo.location = req.body.contactInfo.address;
+            }
+        }
 
         const newResume = await Resume.create({
             userId: req.user._id, // Assuming req.user is set by the auth middleware
@@ -150,8 +159,24 @@ export const updateResume = async (req, res) => {
             return res.status(404).json({ message: "Resume not found or not authorized" });
         }
 
+        if (req.body.contactInfo) {
+            if (req.body.contactInfo.location && !req.body.contactInfo.address) {
+                req.body.contactInfo.address = req.body.contactInfo.location;
+            } else if (req.body.contactInfo.address && !req.body.contactInfo.location) {
+                req.body.contactInfo.location = req.body.contactInfo.address;
+            }
+        }
+
         // Merge updated resume data with existing resume
         Object.assign(resume, req.body);
+
+        if (resume.contactInfo) {
+            if (resume.contactInfo.location && !resume.contactInfo.address) {
+                resume.contactInfo.address = resume.contactInfo.location;
+            } else if (resume.contactInfo.address && !resume.contactInfo.location) {
+                resume.contactInfo.location = resume.contactInfo.address;
+            }
+        }
 
         // Save the updated resume
         const savedResume = await resume.save();

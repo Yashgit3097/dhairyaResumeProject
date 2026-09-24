@@ -84,10 +84,12 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
           <section>
             <h2 className="text-sm font-bold uppercase text-gray-800 mb-2 tracking-wider">CONTACT</h2>
             <ul className="text-xs text-gray-700 space-y-2 pb-2">
-              <li className="flex items-start">
-                <span className="font-semibold min-w-[65px]">Location:</span>
-                {contactInfo.location}
-              </li>
+              {(contactInfo.location || contactInfo.address) && (
+                <li className="flex items-start">
+                  <span className="font-semibold min-w-[65px]">Location:</span>
+                  <span>{contactInfo.location || contactInfo.address}</span>
+                </li>
+              )}
               <li className="flex items-start">
                 <span className="font-semibold min-w-[65px]">Phone:</span>
                 {contactInfo.phone}

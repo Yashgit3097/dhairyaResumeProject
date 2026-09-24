@@ -80,9 +80,9 @@ const TemplateOne = ({ resumeData = {}, colorPalette, containerWidth }) => {
                 </a>
               </div>
             )}
-            {contactInfo.location && (
+            {(contactInfo.location || contactInfo.address) && (
               <div className="flex items-center">
-                <span>{contactInfo.location}</span>
+                <span>{contactInfo.location || contactInfo.address}</span>
               </div>
             )}
           </div>

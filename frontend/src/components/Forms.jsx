@@ -187,8 +187,11 @@ export const ContactInfoForm = ({ contactInfo, updateSection }) => {
           <Input
             label="Address"
             placeholder="City, Country"
-            value={contactInfo.location || ""}
-            onChange={({ target }) => updateSection("location", target.value)}
+            value={contactInfo.location || contactInfo.address || ""}
+            onChange={({ target }) => {
+              updateSection("location", target.value);
+              updateSection("address", target.value);
+            }}
           />
         </div>
 
