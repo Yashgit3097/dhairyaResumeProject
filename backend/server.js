@@ -57,10 +57,35 @@ app.use('/api/resume', resumeRoutes);   // Resume management routes
 app.use('/api/upload', uploadRoutes);   // Standalone image uploads
 app.use('/api/ai', aiRoutes);           // Gemini AI generative endpoints
 
+// Health check & ping route
+app.get('/ping', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Server is awake!', timestamp: new Date().toISOString() });
+});
+
 app.get('/', (req, res) => {
   res.send('Welcome to Resume Builder API Server with Gemini AI!');
 });
 
+// Self-ping to prevent sleep / cold start on Render free tier (every 14 minutes)
+const PING_INTERVAL = 14 * 60 * 1000; // 14 minutes
+const SERVER_URL = process.env.RENDER_EXTERNAL_URL || 'https://dhairyaresumeproject.onrender.com';
+
+const keepAlive = () => {
+  setInterval(async () => {
+    try {
+      const response = await fetch(`${SERVER_URL}/ping`);
+      console.log(`[Keep-Alive] Pinged ${SERVER_URL}/ping - Status: ${response.status} at ${new Date().toLocaleTimeString()}`);
+    } catch (error) {
+      console.error(`[Keep-Alive] Error pinging ${SERVER_URL}:`, error.message);
+    }
+  }, PING_INTERVAL);
+};
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  // Start keep-alive self-pinging only in production or when live URL is defined
+  if (process.env.NODE_ENV === 'production' || SERVER_URL.includes('onrender.com')) {
+    console.log(`[Keep-Alive] Initializing self-ping service for ${SERVER_URL}`);
+    keepAlive();
+  }
 });
