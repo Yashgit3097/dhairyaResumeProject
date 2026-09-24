@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:5000';
+export const BASE_URL = 'https://dhairyaresumeproject.onrender.com';
 
 // Routes for user authentication and features in frontend
 export const API_PATHS = {
